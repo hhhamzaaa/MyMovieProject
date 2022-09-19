@@ -1,0 +1,35 @@
+﻿@page
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    @{
+        try
+        {
+            String movieInfo.MovieId = Request.Query[MovieId]
+                String connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\benab\\OneDrive\\Documents\\MoviesDatabase.mdf;Integrated Security=True;Connect Timeout=30";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                String sql = "DELETE FROM Movies WHERE MovieId = @MovieId";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameter.AddWithValue("MovieId", "MovieId");
+
+                    command.ExecuteNonQuerry();
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+
+        Response.redirect("Movies");
+       }     
+</body>
+</html>
